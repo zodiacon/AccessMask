@@ -6,7 +6,7 @@
 using namespace std;
 
 #define DUMP_ACCESS_RIGHT(ss, value, right)	\
-	if((value & right) == right) ss << "  " << std::setw(25) << std::left << #right << " (0x" << std::hex << right << ")" << std::endl;
+	if((value & right) == right) ss << "  " << std::setw(35) << std::left << #right << " (0x" << std::hex << right << ")" << std::endl;
 
 bool CheckParam(const TCHAR* param, const TCHAR* value);
 int Usage();
@@ -99,6 +99,7 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, EVENT_ALL_ACCESS);
 		}
 		else if(stype == "mutex") {
+			DUMP_ACCESS_RIGHT(ss, value, MUTANT_QUERY_STATE);
 			DUMP_ACCESS_RIGHT(ss, value, MUTEX_MODIFY_STATE);
 			DUMP_ACCESS_RIGHT(ss, value, MUTEX_ALL_ACCESS);
 		}
@@ -107,6 +108,7 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, SEMAPHORE_ALL_ACCESS);
 		}
 		else if(stype == "timer") {
+			DUMP_ACCESS_RIGHT(ss, value, TIMER_QUERY_STATE);
 			DUMP_ACCESS_RIGHT(ss, value, TIMER_MODIFY_STATE);
 			DUMP_ACCESS_RIGHT(ss, value, TIMER_ALL_ACCESS);
 		}
@@ -159,6 +161,14 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, TOKEN_ADJUST_SESSIONID);
 			DUMP_ACCESS_RIGHT(ss, value, TOKEN_ALL_ACCESS);
 		}
+		else if (stype == "job") {
+			DUMP_ACCESS_RIGHT(ss, value, JOB_OBJECT_ASSIGN_PROCESS);
+			DUMP_ACCESS_RIGHT(ss, value, JOB_OBJECT_SET_ATTRIBUTES);
+			DUMP_ACCESS_RIGHT(ss, value, JOB_OBJECT_QUERY);
+			DUMP_ACCESS_RIGHT(ss, value, JOB_OBJECT_TERMINATE);
+			DUMP_ACCESS_RIGHT(ss, value, JOB_OBJECT_SET_SECURITY_ATTRIBUTES);
+			DUMP_ACCESS_RIGHT(ss, value, JOB_OBJECT_ALL_ACCESS);
+		}
 	}
 	else {
 		ss << "  (no object type) 0x" << hex << (value & 0xffff) << endl;
@@ -174,7 +184,7 @@ bool CheckParam(const TCHAR* param, const TCHAR* value) {
 int Usage() {
 	cout << "Usage: AccessMask [-d] <value> [type]" << endl 
 		<< "value is interpreted as hex, unless the -d switch is specified (decimal)." << endl
-		<< "type is one of: process, thread, token, timer, key, event, mutex, semaphore, desktop, windowstation. " << endl
+		<< "type is one of: process, thread, job, token, timer, key, event, mutex, semaphore, desktop, windowstation. " << endl
 		<< "Specific access mask bits will not be interpreted if type is not specified." << endl;
 	return 1;
 }
