@@ -39,7 +39,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
 string DumpAccessMask(DWORD value, LPCTSTR type) {
 	stringstream ss;
-	ss << "Access mask: " << endl;
+	ss << "Access mask: 0x" << hex << value << " (" << dec << value << ")" << endl;
 	ss << "Generic rights:" << endl;
 	DUMP_ACCESS_RIGHT(ss, value, ACCESS_SYSTEM_SECURITY);
 	DUMP_ACCESS_RIGHT(ss, value, STANDARD_RIGHTS_READ);
@@ -147,6 +147,18 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, KEY_WRITE);
 			DUMP_ACCESS_RIGHT(ss, value, KEY_ALL_ACCESS);
 		}
+		else if (stype == "token") {
+			DUMP_ACCESS_RIGHT(ss, value, TOKEN_ASSIGN_PRIMARY);
+			DUMP_ACCESS_RIGHT(ss, value, TOKEN_DUPLICATE);
+			DUMP_ACCESS_RIGHT(ss, value, TOKEN_IMPERSONATE);
+			DUMP_ACCESS_RIGHT(ss, value, TOKEN_QUERY);
+			DUMP_ACCESS_RIGHT(ss, value, TOKEN_QUERY_SOURCE);
+			DUMP_ACCESS_RIGHT(ss, value, TOKEN_ADJUST_PRIVILEGES);
+			DUMP_ACCESS_RIGHT(ss, value, TOKEN_ADJUST_GROUPS);
+			DUMP_ACCESS_RIGHT(ss, value, TOKEN_ADJUST_DEFAULT);
+			DUMP_ACCESS_RIGHT(ss, value, TOKEN_ADJUST_SESSIONID);
+			DUMP_ACCESS_RIGHT(ss, value, TOKEN_ALL_ACCESS);
+		}
 	}
 	else {
 		ss << "  (no object type) 0x" << hex << (value & 0xffff) << endl;
@@ -162,7 +174,7 @@ bool CheckParam(const TCHAR* param, const TCHAR* value) {
 int Usage() {
 	cout << "Usage: AccessMask [-d] <value> [type]" << endl 
 		<< "value is interpreted as hex, unless the -d switch is specified (decimal)." << endl
-		<< "type is one of: process, thread, timer, key, event, mutex, semaphore, desktop, windowstation. " << endl
+		<< "type is one of: process, thread, token, timer, key, event, mutex, semaphore, desktop, windowstation. " << endl
 		<< "Specific access mask bits will not be interpreted if type is not specified." << endl;
 	return 1;
 }
