@@ -1,4 +1,4 @@
-AccessMask is a command line tool that interprests handle access mask values (both generic and specific).
+AccessMask is a command line tool that interprets handle access mask values (both generic and specific).
 
 Usage: AccessMask [-d] <value> [type]
 		
