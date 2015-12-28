@@ -41,17 +41,17 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 	stringstream ss;
 	ss << "Access mask: 0x" << hex << value << " (" << dec << value << ")" << endl;
 	ss << "Generic rights:" << endl;
-	DUMP_ACCESS_RIGHT(ss, value, ACCESS_SYSTEM_SECURITY);
-	DUMP_ACCESS_RIGHT(ss, value, STANDARD_RIGHTS_READ);
-	DUMP_ACCESS_RIGHT(ss, value, STANDARD_RIGHTS_WRITE);
-	DUMP_ACCESS_RIGHT(ss, value, STANDARD_RIGHTS_EXECUTE);
+	DUMP_ACCESS_RIGHT(ss, value, READ_CONTROL);
+	//DUMP_ACCESS_RIGHT(ss, value, STANDARD_RIGHTS_READ);
+	//DUMP_ACCESS_RIGHT(ss, value, STANDARD_RIGHTS_WRITE);
+	//DUMP_ACCESS_RIGHT(ss, value, STANDARD_RIGHTS_EXECUTE);
 	DUMP_ACCESS_RIGHT(ss, value, STANDARD_RIGHTS_REQUIRED);
 	DUMP_ACCESS_RIGHT(ss, value, STANDARD_RIGHTS_ALL);
-	DUMP_ACCESS_RIGHT(ss, value, READ_CONTROL);
 	DUMP_ACCESS_RIGHT(ss, value, DELETE);
 	DUMP_ACCESS_RIGHT(ss, value, SYNCHRONIZE);
 	DUMP_ACCESS_RIGHT(ss, value, WRITE_DAC);
 	DUMP_ACCESS_RIGHT(ss, value, WRITE_OWNER);
+	DUMP_ACCESS_RIGHT(ss, value, ACCESS_SYSTEM_SECURITY);
 	DUMP_ACCESS_RIGHT(ss, value, GENERIC_READ);
 	DUMP_ACCESS_RIGHT(ss, value, GENERIC_WRITE);
 	DUMP_ACCESS_RIGHT(ss, value, GENERIC_EXECUTE);
@@ -169,6 +169,20 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, JOB_OBJECT_SET_SECURITY_ATTRIBUTES);
 			DUMP_ACCESS_RIGHT(ss, value, JOB_OBJECT_ALL_ACCESS);
 		}
+		else if (stype == "file" || stype == "directory") {
+			DUMP_ACCESS_RIGHT(ss, value, FILE_GENERIC_READ);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_READ_ATTRIBUTES);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_READ_DATA);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_READ_EA);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_GENERIC_WRITE);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_WRITE_ATTRIBUTES);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_WRITE_DATA);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_WRITE_EA);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_APPEND_DATA);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_GENERIC_EXECUTE);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_DELETE_CHILD);
+			DUMP_ACCESS_RIGHT(ss, value, FILE_ALL_ACCESS);
+		}
 	}
 	else {
 		ss << "  (no object type) 0x" << hex << (value & 0xffff) << endl;
@@ -184,7 +198,8 @@ bool CheckParam(const TCHAR* param, const TCHAR* value) {
 int Usage() {
 	cout << "Usage: AccessMask [-d] <value> [type]" << endl 
 		<< "value is interpreted as hex, unless the -d switch is specified (decimal)." << endl
-		<< "type is one of: process, thread, job, token, timer, key, event, mutex, semaphore, desktop, windowstation. " << endl
+		<< "type is one of: file, directoryprocess, thread, job, token, timer," << endl 
+		<< " key, event, mutex, semaphore, desktop, windowstation. " << endl
 		<< "Specific access mask bits will not be interpreted if type is not specified." << endl;
 	return 1;
 }
