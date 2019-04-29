@@ -123,7 +123,7 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, DESKTOP_CREATEWINDOW);
 			DUMP_ACCESS_RIGHT(ss, value, DESKTOP_READOBJECTS);
 		}
-		else if(stype == "windowstation") {
+		else if(stype == "windowstation" || stype == "winsta") {
 			DUMP_ACCESS_RIGHT(ss, value, WINSTA_READSCREEN);
 			DUMP_ACCESS_RIGHT(ss, value, WINSTA_ENUMERATE);
 			DUMP_ACCESS_RIGHT(ss, value, WINSTA_EXITWINDOWS);
