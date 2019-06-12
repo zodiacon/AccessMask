@@ -83,7 +83,7 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, PROCESS_ALL_ACCESS);
 		}
 		else if(stype == "thread") {
-			DUMP_ACCESS_RIGHT(ss, value, PROCESS_ALL_ACCESS);
+			DUMP_ACCESS_RIGHT(ss, value, THREAD_ALL_ACCESS);
 			DUMP_ACCESS_RIGHT(ss, value, THREAD_QUERY_LIMITED_INFORMATION);
 			DUMP_ACCESS_RIGHT(ss, value, THREAD_SET_LIMITED_INFORMATION);
 			DUMP_ACCESS_RIGHT(ss, value, THREAD_DIRECT_IMPERSONATION);
@@ -96,6 +96,7 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, THREAD_SUSPEND_RESUME);
 			DUMP_ACCESS_RIGHT(ss, value, THREAD_TERMINATE);
 			DUMP_ACCESS_RIGHT(ss, value, THREAD_ALL_ACCESS);
+			DUMP_ACCESS_RIGHT(ss, value, THREAD_ALERT);
 		}
 		else if(stype == "event") {
 			DUMP_ACCESS_RIGHT(ss, value, EVENT_MODIFY_STATE);
