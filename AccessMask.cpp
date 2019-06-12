@@ -5,6 +5,8 @@
 
 using namespace std;
 
+#define THREAD_ALERT 4
+
 #define DUMP_ACCESS_RIGHT(ss, value, right)	\
 	if((value & right) == right) ss << "  " << std::setw(35) << std::left << #right << " (0x" << std::hex << right << ")" << std::endl;
 
@@ -95,7 +97,6 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, THREAD_GET_CONTEXT);
 			DUMP_ACCESS_RIGHT(ss, value, THREAD_SUSPEND_RESUME);
 			DUMP_ACCESS_RIGHT(ss, value, THREAD_TERMINATE);
-			DUMP_ACCESS_RIGHT(ss, value, THREAD_ALL_ACCESS);
 			DUMP_ACCESS_RIGHT(ss, value, THREAD_ALERT);
 		}
 		else if(stype == "event") {
