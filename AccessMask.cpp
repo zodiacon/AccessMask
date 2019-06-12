@@ -8,6 +8,9 @@ using namespace std;
 #define DUMP_ACCESS_RIGHT(ss, value, right)	\
 	if((value & right) == right) ss << "  " << std::setw(35) << std::left << #right << " (0x" << std::hex << right << ")" << std::endl;
 
+#define PORT_CONNECT 0x0001
+#define PORT_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | 0x1)
+
 bool CheckParam(const TCHAR* param, const TCHAR* value);
 int Usage();
 string DumpAccessMask(DWORD value, LPCTSTR type);
@@ -98,7 +101,7 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, EVENT_MODIFY_STATE);
 			DUMP_ACCESS_RIGHT(ss, value, EVENT_ALL_ACCESS);
 		}
-		else if(stype == "mutex") {
+		else if(stype == "mutex" || stype == "mutant") {
 			DUMP_ACCESS_RIGHT(ss, value, MUTANT_QUERY_STATE);
 			DUMP_ACCESS_RIGHT(ss, value, MUTEX_MODIFY_STATE);
 			DUMP_ACCESS_RIGHT(ss, value, MUTEX_ALL_ACCESS);
@@ -183,6 +186,10 @@ string DumpAccessMask(DWORD value, LPCTSTR type) {
 			DUMP_ACCESS_RIGHT(ss, value, FILE_DELETE_CHILD);
 			DUMP_ACCESS_RIGHT(ss, value, FILE_ALL_ACCESS);
 		}
+		else if (stype == "alpc" || stype == "port") {
+			DUMP_ACCESS_RIGHT(ss, value, PORT_CONNECT);
+			DUMP_ACCESS_RIGHT(ss, value, PORT_ALL_ACCESS);
+		}
 	}
 	else {
 		ss << "  (no object type) 0x" << hex << (value & 0xffff) << endl;
@@ -198,8 +205,8 @@ bool CheckParam(const TCHAR* param, const TCHAR* value) {
 int Usage() {
 	cout << "Usage: AccessMask [-d] <value> [type]" << endl 
 		<< "value is interpreted as hex, unless the -d switch is specified (decimal)." << endl
-		<< "type is one of: file, directoryprocess, thread, job, token, timer," << endl 
-		<< " key, event, mutex, semaphore, desktop, windowstation. " << endl
+		<< "type is one of: port (alpc) file, directory, process, thread, job, token, timer," << endl 
+		<< " key, event, mutex (mutant), semaphore, desktop, windowstation (winsta). " << endl
 		<< "Specific access mask bits will not be interpreted if type is not specified." << endl;
 	return 1;
 }
